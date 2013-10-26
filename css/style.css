@@ -1,0 +1,22 @@
+* {
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+
+img {
+	float:left
+}
+
+.navbar:last-child {
+	margin-bottom:0px;
+}
+
+.panel-body {
+	padding: 0px;
+}
+
+.text {
+	padding: 15px;
+	margin:0;
+	margin-bottom:-4px;
+}
