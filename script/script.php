@@ -39,24 +39,6 @@ foreach ($reply as $single){
 			$text = $tweet['text'];
 			if ($rt==TRUE) {$text = $tweet['retweeted_status']['text'];}
 			
-					
-			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['urls'] as $url){
-				$replacement = '<a href="'.$url['expanded_url'].'" target="_blank">'.$url['display_url'].'</a>';
-				$text = str_replace($url['url'],$replacement,$text);
-			}}
-			else{foreach($tweet['entities']['urls'] as $url){
-				$replacement = '<a href="'.$url['expanded_url'].'" target="_blank">'.$url['display_url'].'</a>';
-				$text = str_replace($url['url'],$replacement,$text);
-			}}
-			
-			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['user_mentions'] as $mention){
-				$replacement = '<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
-				$text = str_replace($mention['screen_name'],$replacement,$text);
-			}}
-			else{foreach($tweet['entities']['user_mentions'] as $mention){
-				$replacement = '<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
-				$text = str_replace($mention['screen_name'],$replacement,$text);
-			}}
 			
 			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['hashtags'] as $hashtag){
 				$replacement = '<a href="https://twitter.com/search?q=%23'.$hashtag['text'].'" target="_blank">'.$hashtag['text'].'</a>';
@@ -66,6 +48,28 @@ foreach ($reply as $single){
 				$replacement = '<a href="https://twitter.com/search?q=%23'.$hashtag['text'].'" target="_blank">'.$hashtag['text'].'</a>';
 				$text = str_replace($hashtag['text'],$replacement,$text);
 			}}
+				
+			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['user_mentions'] as $mention){
+				$replacement = '<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
+				$text = str_replace($mention['screen_name'],$replacement,$text);
+			}}
+			else{foreach($tweet['entities']['user_mentions'] as $mention){
+				$replacement = '<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
+				$text = str_replace($mention['screen_name'],$replacement,$text);
+			}}
+				
+			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['urls'] as $url){
+				$replacement = '<a href="'.$url['expanded_url'].'" target="_blank">'.$url['display_url'].'</a>';
+				$text = str_replace($url['url'],$replacement,$text);
+			}}
+			else{foreach($tweet['entities']['urls'] as $url){
+				$replacement = '<a href="'.$url['expanded_url'].'" target="_blank">'.$url['display_url'].'</a>';
+				$text = str_replace($url['url'],$replacement,$text);
+			}}
+			
+			
+			
+			
 			
 			
 			
