@@ -4,7 +4,15 @@
 }
 
 img {
-	float:left
+	float:left;
+}
+
+a {
+	color:#333;
+}
+
+a:hover {
+	color:#333;
 }
 
 .navbar:last-child {
