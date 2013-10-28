@@ -30,7 +30,7 @@ foreach ($reply as $single){
 			
 			if ($tweet['id_str'] > $id_neu) $id_neu = $tweet['id_str'];
 			$rt=FALSE;
-			if($tweet['retweeted_status']!=NULL) $rt=TRUE;
+			if(isset($tweet['retweeted_status'])) $rt=TRUE;
 			setlocale(LC_ALL, 'de_DE');
 			
 			$tweetdate = strftime("%H:%M", strtotime($tweet['created_at']));
