@@ -33,29 +33,39 @@ foreach ($reply as $single){
 			if(isset($tweet['retweeted_status'])) $rt=TRUE;
 			setlocale(LC_ALL, 'de_DE');
 			
-			$tweetdate = strftime("%H:%M", strtotime($tweet['created_at']));
-			if ($rt==TRUE) {$tweetdate_time = strtotime($tweet['retweeted_status']['created_at']);$tweetdate = strftime("%H:%M", $tweetdate_time);}
+			$tweettime = strftime("%H:%M", strtotime($tweet['created_at']));
+			$tweetdate = strftime("%m.%d", strtotime($tweet['created_at']));
+			$tweetdate_display = strftime("%d.%m.%y", strtotime($tweet['created_at']));
+			
+			if ($rt==TRUE) {
+				$tweettime_time = strtotime($tweet['retweeted_status']['created_at']);
+				$tweettime = strftime("%H:%M", $tweettime_time);
+				$tweetdate = strftime("%m.%d", $tweettime_time);
+				$tweetdate_display = strftime("%d.%m.%y", $tweettime_time);
+			}
+			
+			if ($tweetdate < date("m.d")) $date = TRUE;
 			
 			$text = $tweet['text'];
 			if ($rt==TRUE) {$text = $tweet['retweeted_status']['text'];}
 			
 			
 			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['hashtags'] as $hashtag){
-				$replacement = '<a href="https://twitter.com/search?q=%23'.$hashtag['text'].'" target="_blank">'.$hashtag['text'].'</a>';
-				$text = str_replace($hashtag['text'],$replacement,$text);
+				$replacement = '#<a href="https://twitter.com/search?q=%23'.$hashtag['text'].'" target="_blank">'.$hashtag['text'].'</a>';
+				$text = str_replace("#".$hashtag['text'],$replacement,$text);
 			}}
 			else{foreach($tweet['entities']['hashtags'] as $hashtag){
-				$replacement = '<a href="https://twitter.com/search?q=%23'.$hashtag['text'].'" target="_blank">'.$hashtag['text'].'</a>';
-				$text = str_replace($hashtag['text'],$replacement,$text);
+				$replacement = '#<a href="https://twitter.com/search?q=%23'.$hashtag['text'].'" target="_blank">'.$hashtag['text'].'</a>';
+				$text = str_replace("#".$hashtag['text'],$replacement,$text);
 			}}
 				
 			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['user_mentions'] as $mention){
-				$replacement = '<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
-				$text = str_replace($mention['screen_name'],$replacement,$text);
+				$replacement = '@<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
+				$text = str_replace("@".$mention['screen_name'],$replacement,$text);
 			}}
 			else{foreach($tweet['entities']['user_mentions'] as $mention){
-				$replacement = '<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
-				$text = str_replace($mention['screen_name'],$replacement,$text);
+				$replacement = '@<a href="https://twitter.com/'.$mention['screen_name'].'" target="_blank">'.$mention['screen_name'].'</a>';
+				$text = str_replace("@".$mention['screen_name'],$replacement,$text);
 			}}
 				
 			if ($rt==TRUE){foreach($tweet['retweeted_status']['entities']['urls'] as $url){
@@ -91,8 +101,10 @@ foreach ($reply as $single){
 			
 			echo"<div ";
 			echo "class=\"neu panel panel-default\" id=\"$tweet_id\"><div class=\"panel-heading\">";
-			echo "$name  (@<a href=\"https://twitter.com/$screen_name\" target=\"_blank\">$screen_name</a>) | <a href=\"https://twitter.com/$screen_name/status/$tweet_id\" target=\"_blank\">$tweetdate</a> ";
-			if ($rt==TRUE){echo"| <span class=\"glyphicon glyphicon-retweet\"></span> <a href=\"https://twitter.com/$rt_name\" target=\"_blank\">$rt_name</a>";}
+			echo "$name  (@<a href=\"https://twitter.com/$screen_name\" target=\"_blank\">$screen_name</a>) ";
+			if ($tweetdate < date("m.d")) echo "| $tweetdate_display ";
+			echo"| <a href=\"https://twitter.com/$screen_name/status/$tweet_id\" target=\"_blank\">$tweettime</a> ";
+			if ($rt==TRUE){echo"| <i class=\"fa fa-retweet  fa-lg\"></i> <a href=\"https://twitter.com/$rt_name\" target=\"_blank\">$rt_name</a>";}
 			echo"</div><div class=\"panel-body\"><img src=\"$profil_image\"></img><p class=\"text\">$text</p></div></div>";
 			
 			 
