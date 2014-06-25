@@ -4,11 +4,11 @@
 // Search term
 // The term twitter is searched for
 // See: https://dev.twitter.com/docs/api/1.1/get/search/tweets
-$search = "q=hashtag";
+$search = "q=wm2014";
 
 // Displayed Search Term
 // In the headnav displayed Search Term
-$display = "#Hashtag";
+$display = "#WM2014";
 
 // Reload time in seconds
 // If you want to reload the page (recommended!)
@@ -18,7 +18,7 @@ $reload = 1200;  // <-- This are 20 minutes
 // Refresh time in miliseconds
 // Every X miliseconds the script tries to get new tweets.
 // Because of twitters API-limits, don't set it lower than 5000ms.
-$refresh = 10000;
+$refresh = 5000;
 
 // Tokens
 // Get your tokens at dev.twitter.com
