@@ -1,0 +1,632 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>twallr</title>
+    <link rel="stylesheet" href="css/foundation.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="js/vendor/modernizr.js"></script>
+    <script type="text/javascript">
+        // Insert your Twitter-API-Key here!
+        var key = "B6WJJpLAipCb3aKuv9OcGQ";
+        var secret = "zMdndSx0eo6Ts70bQOEc2b4d9g1vuEjXgwtuOXK254";
+    </script>
+</head>
+<body>
+<div id="settingsModal" class="reveal-modal row" data-reveal>
+    <h2>Settings</h2>
+
+    <p class="lead">A few Setting for twallr.</p>
+
+
+    <div class="row">
+        <div class="small-2 columns">
+            <label class="inline left">Show retweets</label>
+        </div>
+        <div class="small-10 columns">
+            <div class="switch radius">
+                <input id="retweetcheckbox" name="retweetcheckbox" onchange="checkboxRTchange();" type="checkbox"
+                       checked style="width: 80px;">
+                <label for="retweetcheckbox"></label>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-2 columns">
+            <label class="inline left">Using relative Time</label>
+        </div>
+        <div class="small-10 columns">
+            <div class="switch radius">
+                <input id="relativetimecheckbox" name="relativetimecheckbox" onclick="checkboxTimechange();"
+                       type="checkbox" style="width: 80px;">
+                <label for="relativetimecheckbox"></label>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="small-2 columns">
+            <label class="inline left">Show scrollbar</label>
+        </div>
+        <div class="small-10 columns">
+            <div class="switch radius">
+                <input id="scrollbarcheckbox" name="scrollbarcheckbox" onclick="checkboxScrollbar();" type="checkbox"
+                       style="width: 80px;">
+                <label for="scrollbarcheckbox"></label>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="small-2 columns">
+            <label class="inline left" style="margin-top: 8px;">Refresh-Rate</label>
+        </div>
+        <div class="small-6 columns" onmouseover="updaterefresh();">
+            <div class="range-slider radius refreshslider" id="refreshslider" data-slider
+                 data-options="start: 10; end: 60; step: 5; value: 40;">
+                <span class="range-slider-handle" role="slider" tabindex="0"></span>
+                <span class="range-slider-active-segment"></span>
+                <input id="refreshinput" type="hidden">
+            </div>
+        </div>
+        <div class="small-4 columns">
+            <label class="inline left" style="margin-top: 8px;"><span id="refreshdisplay">10</span> seconds</label>
+        </div>
+
+
+    </div>
+
+
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+
+<div id="aboutModal" class="reveal-modal row" data-reveal>
+    <h2>About</h2>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <p class="lead">Created by <a href="https://twitter.com/schmidtflo" target="_blank">@schmidtflo</a> || <a
+                    href="http://netzleben.com" target="_blank">netzleben.com</a></p>
+
+            <p><a href="https://twitter.com/intent/user?screen_name=schmidtflo" target="_blank">Follow on Twitter</a> //
+                <a href="https://plus.google.com/+FlorianSchmidtPrivat" target="_blank">Follow on Google+</a> // <a
+                        href="https://www.facebook.com/florian.schmidt.privat" target="_blank">Follow on Facebook</a>
+            </p>
+            <hr>
+            <p>Thanks to:</p>
+            <ul>
+                <li><a href="https://github.com/jublonet/codebird-js/" target="_blank">codebird-js</a> (Twitter library)
+                </li>
+                <li><a href="http://foundation.zurb.com/" target="_blank">Foundation</a> (UI Framework)</li>
+                <li><a href="http://jquery.com/" target="_blank">jQuery</a> (JS Framework)</li>
+                <li><a href="http://jqueryui.com/" target="_blank">jQuery UI</a> (UI Framework, used for the animations)
+                </li>
+                <li><a href="http://momentjs.com/" target="_blank">Moment.js</a> (JS library for manipulating dates)
+                </li>
+                <li><a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a> (Font for
+                    symbols)
+                </li>
+                <li><a href="http://tobiasahlin.com/spinkit/" target="_blank">Spinkit</a> (Loading animation)</li>
+            </ul>
+        </div>
+
+
+    </div>
+
+
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+
+<div class="sticky contain-to-grid">
+    <nav class="top-bar" data-topbar role="navigation">
+
+        <ul class="title-area">
+            <li class="name">
+                <h1 id="logo"><a href="#">twallr</a></h1>
+            </li>
+            <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+            <li class="toggle-topbar menu-icon"><a href="#"><span>Menü</span></a></li>
+        </ul>
+
+        <section class="top-bar-section">
+
+
+            <!-- Left Nav Section -->
+            <ul class="right">
+                <li class="divider"></li>
+                <li><a href="#" id="fullscreen" onclick="fullscreen();">Fullscreen</a></li>
+                <li class="divider"></li>
+                <li class="has-dropdown">
+                    <a data-reveal-id="settingsModal" id="settingslink" href="#">Settings</a>
+                    <ul class="dropdown">
+                        <li><a href="https://twitter.com/intent/user?screen_name=schmidtflo" target="_blank">Follow
+                            @schmidtflo</a></li>
+                        <li>
+                            <a href="https://twitter.com/intent/tweet?url=http%3A%2F%2Ftwallr.com&via=schmidtflo&text=I%27m%20using%20twallr%20to%20make%20my%20own%20twitterwall.&hashtags=twallr"
+                               target="_blank">Tweet about twallr</a></li>
+                        <li><a data-reveal-id="aboutModal" id="aboutlink" href="#">About</a></li>
+                        <li><a href="#" onclick="logout();">Logout</a></li>
+
+                    </ul>
+                </li>
+                <li class="divider"></li>
+
+                <li class="has-form">
+                    <div class="row collapse">
+                        <div class="large-8 small-9 columns">
+                            <input type="text" id="hashtaginput" placeholder="#Hashtag" style="height:30px;">
+                        </div>
+                        <div class="large-4 small-3 columns">
+                            <a onclick="setHashtag();" class="alert button expand" style="height:30px;">Go!</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </nav>
+</div>
+<div class="content">
+    <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+    </div>
+    <div class="notloggedin" hidden="hidden">
+        <div class="row">
+            <div class="panel" id="intropanel">
+                <p id="introtext">To use twallr you have to login per Twitter.</p>
+
+                <div class="row">
+                    <div class="small-4 small-centered columns">
+                        <button onclick="getRequestToken();" class="button expand radius" id="authentifizieren">Per
+                            Twitter authentifizieren
+                        </button>
+
+
+                        <form id="pinentry" hidden="hidden">
+                            <div class="row">
+                                <div class="large-12 columns">
+                                    <div class="row collapse">
+                                        <div class="small-10 columns">
+                                            <input id="pinentryinputfield" type="text"
+                                                   placeholder="Entry your authentification-PIN here">
+                                        </div>
+                                        <div class="small-2 columns">
+                                            <a href="#" onclick="getAccessToken();" class="button postfix">Go</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="loggedin" hidden="hidden" id="tweetarea">
+
+
+    </div>
+</div>
+<script type="text/javascript" src="js/vendor/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script src="js/foundation.min.js"></script>
+<script src="js/foundation/foundation.slider.js"></script>
+<script src="js/foundation/foundation.joyride.js"></script>
+<script src="js/foundation/foundation.tooltip.js"></script>
+<script src="js/vendor/jquery.cookie.js"></script>
+<script src="js/moment.js"></script>
+<script type="text/javascript" src="js/codebird.js"></script>
+<script type="text/javascript">
+$(document).foundation();
+$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+    $(document).foundation('reflow');
+});
+$(document).foundation('slider', 'reflow');
+
+var timeout;
+var cb = new Codebird;
+cb.setConsumerKey(key, secret);
+
+
+function getTweets() {
+    $('.spinner').css('opacity', 1);
+
+    if ($('.showtweet').length == 0) localStorage.sinceid = 0;
+
+    if (localStorage.sinceid == null) localStorage.sinceid = 0;
+    var hashtag = localStorage.hashtag;
+    var sinceid = localStorage.sinceid;
+
+
+    var params = {
+        q: hashtag,
+        result_type: "recent",
+        since_id: sinceid,
+        //lang: "de",
+        count: 20
+    };
+
+    cb.__call(
+            "search_tweets",
+            params,
+            function (reply) {
+                console.log(reply);
+                if (reply.httpstatus != 200) {
+
+                }
+                showableTweets = [];
+                reply.statuses.forEach(function (status) {
+                    daten = {};
+                    if (status.retweeted_status != null) {
+                        daten.id = status.retweeted_status.id_str;
+                        daten.rt_id = status.id_str;
+                        daten.rt = true;
+                        daten.text = status.retweeted_status.text;
+                        daten.picture = status.retweeted_status.user.profile_image_url;
+                        daten.account_name = status.retweeted_status.user.screen_name;
+                        daten.display_name = status.retweeted_status.user.name;
+                        daten.rt_account_name = status.user.screen_name;
+                        daten.time = status.retweeted_status.created_at;
+                        daten.entities = status.retweeted_status.entities;
+
+                    } else {
+                        daten.id = status.id_str;
+                        daten.rt_id = daten.id;
+                        daten.rt = false;
+                        daten.text = status.text;
+                        daten.picture = status.user.profile_image_url;
+                        daten.account_name = status.user.screen_name;
+                        daten.display_name = status.user.name;
+                        daten.rt_account_name = null;
+                        daten.time = status.created_at;
+                        daten.entities = status.entities;
+                    }
+
+                    daten.timestamp = getTimestamp(daten.time);
+                    daten.date = getDate(daten.time);
+                    daten.sameday = sameDay(daten.time);
+                    daten.time = getTime(daten.time);
+                    daten.text = correctText(daten.text, daten.entities);
+
+                    if ($('#' + daten.rt_id).length == 0) {
+                        if (daten.rt == false || localStorage.showrt == 'true') {
+                            showableTweets.push(daten);
+                        }
+                    }
+                });
+                //console.log(showableTweets);
+
+                var counter = showTweets(showableTweets);
+
+                var refresh = localStorage.refresh;
+                if (counter > refresh) refresh = counter;
+                localStorage.sinceid = reply.search_metadata.max_id;
+                deletelast();
+                $('.spinner').css('opacity', 0);
+
+                timeout = setTimeout(function () {
+                    getTweets();
+                }, refresh * 1000);
+
+
+            }
+    );
+}
+
+function showTweets(tweets) {
+    liste = [];
+    tweets.forEach(function (tweet) {
+        var html = '<div class="row showtweet'
+        if (tweet.rt == true) html += ' rt';
+
+        html += '" id="' + tweet.rt_id + '" style="display:none;"><div class="panel"><img class="profilepic" src="'
+        html += tweet.picture;
+        html += '"><p class="usermeta">';
+        html += '<a target="_blank" href="https://twitter.com/' + tweet.account_name + '">' + tweet.display_name + ' (@' + tweet.account_name + ')</a>';
+        html += ' » <a target="_blank" data-time="' + tweet.timestamp + '" href="https://twitter.com/' + tweet.account_name + '/status/' + tweet.id + '">' + tweet.time + '</a>';
+        /*if (tweet.sameday == false) {
+         html += ' // ' + tweet.date;
+         }*/
+        if (tweet.rt == true) {
+            html += ' (<i class="fa fa-retweet"></i> <a target="_blank" href="https://twitter.com/' + tweet.rt_account_name + '">@' + tweet.rt_account_name + '</a>)';
+        }
+        html += '<span class="interactions right">' +
+                '<a href="https://twitter.com/intent/retweet?tweet_id=' +
+                tweet.id +
+                '" target="_blank"><i class="fa fa-retweet"></i> Retweet</a> // <a href="https://twitter.com/intent/favorite?tweet_id=' + tweet.id +
+                '" target="_blank"><i class="fa fa-star-o"></i> Favorite</a>' +
+                '</span></p><p class="tweettext">' + tweet.text + '</p></div></div>';
+
+        liste.push(html);
+
+    });
+    liste.reverse();
+    var counter = 0;
+
+    liste.forEach(function (html) {
+        $('#tweetarea').prepend(html);
+        var id = $('.showtweet').first().attr('id');
+        updateTime();
+        $('#' + id).delay(counter * 1000).show('blind', 'easeInOutQuart', 800);
+
+        counter++;
+    });
+
+    return counter;
+}
+
+function sameDay(timestamp) {
+    var time = moment(timestamp, 'ddd MMM DD HH:mm:SS Z YYYY');
+    var now = moment();
+    return time.isSame(now, 'day');
+}
+function getTime(timestamp) {
+    var time = moment(timestamp, 'ddd MMM DD HH:mm:SS Z YYYY').format('HH:mm');
+    return time;
+}
+function getTimestamp(timestamp) {
+    var ts = moment(timestamp, 'ddd MMM DD HH:mm:SS Z YYYY').unix();
+    return ts;
+}
+function getDate(timestamp) {
+    var date = moment(timestamp, 'ddd MMM DD HH:mm:SS Z YYYY').format('D.M.');
+    return date;
+}
+
+function correctText(text, entities) {
+    entities.urls.forEach(function (url) {
+
+        text = text.replace(url.url, '<a target="_blank" href="' + url.expanded_url + '">' + url.display_url + '</a>');
+    });
+    entities.user_mentions.forEach(function (mention) {
+        text = text.replace("@" + mention.screen_name, '<a target="_blank" href="https://twitter.com/' + mention.screen_name + '">@' + mention.screen_name + '</a>');
+    });
+    entities.hashtags.forEach(function (hashtag) {
+        text = text.replace("#" + hashtag.text, '<a target="_blank" href="https://twitter.com/hashtag/' + hashtag.text + '">#' + hashtag.text + '</a>');
+    });
+    if (entities.media != null) {
+        entities.media.forEach(function (picture) {
+            text = text.replace(picture.url, '<a target="_blank" href="' + picture.expanded_url + '"><em>Foto</em></a>');
+        });
+    }
+    ;
+    return text;
+}
+
+function getRequestToken() {
+    cb.__call(
+            "oauth_requestToken",
+            {oauth_callback: "oob"},
+            function (reply) {
+                // stores it
+                cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+
+                // gets the authorize screen URL
+                cb.__call(
+                        "oauth_authorize",
+                        {},
+                        function (auth_url) {
+                            window.codebird_auth = window.open(auth_url);
+                        }
+                );
+            }
+
+    );
+    $("#authentifizieren").hide("fade", 400);
+    $("#pinentry").delay(400).show("fade", 400);
+}
+
+function getAccessToken() {
+    $("#intropanel").hide("fade", 200);
+    $('.spinner').css('opacity', 1);
+    cb.__call(
+            "oauth_accessToken",
+            {oauth_verifier: document.getElementById("pinentryinputfield").value},
+            function (reply) {
+                cb.setToken(reply.oauth_token, reply.oauth_token_secret);
+
+                localStorage.setItem("token", reply.oauth_token);
+                localStorage.setItem("secret", reply.oauth_token_secret);
+
+                $(".notloggedin").hide("fade", 350);
+                $(".loggedin").delay(350).show("fade", 350);
+                $(document).foundation('joyride', 'start');
+                getTweets();
+            }
+    );
+}
+
+
+function setHashtag() {
+    var hashtag = $("#hashtaginput")[0].value;
+    localStorage.hashtag = hashtag;
+    localStorage.sinceid = 0;
+    $("#tweetarea").empty();
+    clearTimeout(timeout);
+    getTweets();
+}
+
+function deletelast() {
+    var show = 100;
+    var length = $('.showtweet').length;
+    if (length >= show) {
+        var cut = length - show;
+        $('.showtweet').slice(-cut).hide('fade', 2000).remove();
+    }
+}
+
+$(document).ready(function () {
+    if (localStorage.hashtag == null) {
+        localStorage.hashtag = "twallr";
+        $("#hashtaginput")[0].value = "twallr";
+    } else {
+        $("#hashtaginput")[0].value = localStorage.hashtag;
+    }
+
+    if (localStorage.refresh == null) {
+        localStorage.refresh = 15;
+        $('#refreshdisplay').text(refresh);
+    } else {
+        var refresh = localStorage.refresh;
+        $('#refreshdisplay').text(refresh);
+        $('#refreshslider').foundation('slider', 'set_value', refresh);
+    }
+    if (localStorage.showrt == null) {
+        localStorage.showrt = true;
+    }
+    if (localStorage.relativetime == null) {
+        localStorage.relativetime = false;
+    }
+
+    if (localStorage.showrt == 'true') {
+        $('input[name=retweetcheckbox]').attr("checked", true);
+    }
+
+    if (localStorage.relativetime == 'true') {
+        $('input[name=relativetimecheckbox]').attr("checked", true);
+    }
+
+    if (localStorage.token == null) {
+        $(".notloggedin").show("fade");
+        //console.log("nicht eingeloggt");
+    } else {
+        //console.log("eingeloggt");
+        $(".loggedin").show("fade");
+        getTweets();
+    }
+});
+
+function logout() {
+    localStorage.clear();
+    location.reload();
+}
+
+function updateTime() {
+    if (localStorage.relativetime == "true") {
+        $('[data-time]').each(function (index) {
+            var timestamp = $(this).attr('data-time');
+            timestamp = moment.unix(timestamp);
+            $(this).text(timestamp.fromNow());
+        });
+    }
+    else {
+        $('[data-time]').each(function (index) {
+            var timestamp = $(this).attr('data-time');
+            timestamp = moment.unix(timestamp);
+            var text = timestamp.format('HH:mm');
+            if (!timestamp.isSame(moment(), 'day')) {
+                text += ' // ' + timestamp.format('ll');
+            }
+            $(this).text(text);
+        });
+    }
+}
+
+
+function fullscreen() {
+    var fullscreenEnabled = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement;
+    var element = document.documentElement;
+    if (fullscreenEnabled == null) {
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        }
+        $('#fullscreen').text('Exit Fullscreen');
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+        $('#fullscreen').text('Fullscreen');
+    }
+}
+
+
+function checkboxScrollbar() {
+    if (localStorage.showscrollbar == null) localStorage.showscrollbar = false;
+    var state = $('input[name=scrollbarcheckbox]').prop('checked');
+
+    console.log(state);
+    localStorage.showscrollbar = state;
+    if (state == false) {
+        $('body').css('overflow', 'hidden');
+    }
+    if (state == true) {
+        $('body').css('overflow', 'auto');
+    }
+}
+
+$(document).on('opened.fndtn.reveal', '[data-reveal]', function () {
+    $(document).foundation('reflow');
+});
+
+function updaterefresh() {
+    console.log('blub');
+    var refresh = $('#refreshslider').attr('data-slider');
+    localStorage.refresh = refresh;
+    $('#refreshdisplay').text(refresh);
+}
+
+function checkboxRTchange() {
+    localStorage.showrt = $('input[name=retweetcheckbox]').prop('checked');
+}
+
+function checkboxTimechange() {
+    localStorage.relativetime = $('input[name=relativetimecheckbox]').prop('checked');
+    updateTime();
+}
+
+$(window).bind('beforeunload', function () {
+    localStorage.sinceid = 0;
+});
+</script>
+
+<script src="js/tracking.js" type="text/javascript"></script>
+
+<ol class="joyride-list" data-joyride>
+    <li data-id="logo" data-text="Next" data-options="tip_location: bottom; prev_button: false">
+        <p>Hello and welcome to twallr.</p>
+    </li>
+    <li data-id="hashtaginput" data-class="custom so-awesome" data-text="Next" data-prev-text="Prev"
+        data-options="tip_location: bottom">
+        <h4>Insert hashtag</h4>
+
+        <p>You have to insert your Hashtag here.</p>
+    </li>
+    <li data-id="settingslink" data-class="custom so-awesome" data-text="Next" data-prev-text="Prev"
+        data-options="tip_location: bottom">
+        <h4>Set your settings</h4>
+
+        <p>You can set some settings like showing retweets here.</p>
+    </li>
+    <li data-button="End" data-prev-text="Prev">
+        <h4>Have fun</h4>
+
+        <p>And now: Have fun with twallr!</p>
+    </li>
+</ol>
+</body>
+</html>
